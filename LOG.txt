@@ -1,0 +1,1 @@
+2023/6/28		Detector类中的detect函数里的infer_request.Infer()报错, 检查loadModule函数返回值(因使用try, 可能导致所有ie插件数据为空)
