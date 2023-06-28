@@ -1,4 +1,5 @@
 #pragma once
+#pragma execution_character_set("utf-8")
 #include <iostream>
 #include <fstream>
 #include <cstdio>
@@ -11,7 +12,7 @@
 
 // ½öÓÃÓÚdebug
 #ifndef deb
-#define deb (std::cout<<"DEBUG POINT"<<std::endl)
+#define deb std::cout<<"DEBUG POINT"<<std::endl;
 
 #endif
 

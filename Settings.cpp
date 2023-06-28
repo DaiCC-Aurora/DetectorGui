@@ -5,7 +5,6 @@
 
 Settings::Settings(QWidget* parent) : QWidget(parent), ui(new Ui::Form()) {
 	ui->setupUi(this);
-
     // 初始化
     // 设置样式, 字体
     QFile qss("style.qss");
@@ -39,10 +38,10 @@ void Settings::update_() {
         warn.warning(nullptr, "Oops", "😥 输入含有非法字符, 请重试\nERROR_CODE: 0X0002", "确定", "取消");
     }
     // TODO: 更改全局变量
-    s_updated = true;
-    s_image_size = ui->imgsz->text().toInt();
-    s_conf = ui->conf->text().toFloat();
+    //SET::set(ui->xml_file->text().toStdString(), ui->conf->text().toInt());
+    s_conf = ui->conf->text().toInt();
     s_model_path = ui->xml_file->text().toStdString();
+    updated = true;
     this->close();
 }
 

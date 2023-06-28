@@ -7,7 +7,7 @@
 */
 bool Detector::loadModule(string model_path, float conf) {
 	try {
-		Core* ie = new Core();
+		Core *ie = new Core();
 		auto network = ie->ReadNetwork(model_path);
 		input_info = network.getInputsInfo();
 		output_info = network.getOutputsInfo();
@@ -71,8 +71,7 @@ Mat Detector::Detect(Mat frame) {
 			}
 		}
 	}
-	this->infer_request.Infer();
-
+	this->infer_request.Infer();	// Î´Öª´íÎó
 	for (auto& item : output_info) {
 		auto output_name = item.first;
 		auto output = infer_request.GetBlob(output_name);
