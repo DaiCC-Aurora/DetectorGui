@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/DetectorGui">
+        <file>assets/icon.png</file>
+        <file>assets/pause.png</file>
+        <file>assets/play.png</file>
+        <file>assets/setting.png</file>
+    </qresource>
+</RCC>

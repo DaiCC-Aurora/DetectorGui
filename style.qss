@@ -1,0 +1,258 @@
+QPushButton, QToolButton, QToggleButton {
+    color: black;
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(0, 0, 0, 0.073);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.183);
+    border-radius: 5px;
+    font: 14px 'Segoe UI', 'Microsoft YaHei';
+    padding: 5px 12px 6px 12px;
+    outline: none;
+}
+
+QToolButton {
+    padding: 5px 9px 6px 8px;
+}
+
+QPushButton[hasIcon=false] {
+    padding: 5px 12px 6px 12px;
+}
+
+QPushButton[hasIcon=true] {
+    padding: 5px 12px 6px 36px;
+}
+
+QDropDownToolButton {
+    padding: 5px 31px 6px 8px;
+}
+
+QDropDownPushButton[hasIcon=false] {
+    padding: 5px 31px 6px 12px;
+}
+
+QDropDownPushButton[hasIcon=true] {
+    padding: 5px 31px 6px 36px;
+}
+
+QPushButton:hover, QToolButton:hover, QToggleButton:hover {
+    background: rgba(249, 249, 249, 0.5);
+}
+
+QPushButton:pressed, QToolButton:pressed, QToggleButton:pressed {
+    color: rgba(0, 0, 0, 0.63);
+    background: rgba(249, 249, 249, 0.3);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.073);
+}
+
+QPushButton:disabled, QToolButton:disabled, QToggleButton:disabled {
+    color: rgba(0, 0, 0, 0.36);
+    background: rgba(249, 249, 249, 0.3);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+#QsplitPushButton, #QsplitToolButton {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+QSplitDropButton {
+    border-left: none;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+#splitPushButton:pressed, #splitToolButton:pressed, SplitDropButton:pressed {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.183);
+}
+
+
+QPrimaryPushButton,
+QToggleButton:checked {
+    color: white;
+    background-color: --ThemeColorPrimary;
+    border: 1px solid --ThemeColorLight1;
+    border-bottom: 1px solid --ThemeColorDark1;
+}
+
+QPrimaryPushButton:hover,
+QToggleButton:checked:hover {
+    background-color: --ThemeColorLight1;
+    border: 1px solid --ThemeColorLight2;
+    border-bottom: 1px solid --ThemeColorDark1;
+}
+
+QPrimaryPushButton:pressed,
+QToggleButton:checked:pressed {
+    color: rgba(255, 255, 255, 0.63);
+    background-color: --ThemeColorLight3;
+    border: 1px solid --ThemeColorLight3;
+}
+
+QPrimaryPushButton:disabled,
+QToggleButton:checked:disabled {
+    color: rgba(255, 255, 255, 0.9);
+    background-color: rgb(205, 205, 205);
+    border: 1px solid rgb(205, 205, 205);
+}
+
+QHyperlinkButton {
+    font: 14px 'Segoe UI', 'Microsoft YaHei';
+    padding: 6px 12px 6px 12px;
+    color: --ThemeColorPrimary;
+    border: none;
+    border-radius: 6px;
+    background-color: transparent;
+}
+
+QHyperlinkButton:hover {
+    background-color: rgba(0, 0, 0, 15);
+}
+
+QHyperlinkButton:pressed {
+    background-color: rgba(0, 0, 0, 7);
+}
+
+QHyperlinkButton:disabled {
+    color: rgba(0, 0, 0, 0.43)
+}
+
+
+QRadioButton {
+    min-height: 24px;
+    max-height: 24px;
+    background-color: transparent;
+    font: 14px 'Segoe UI', 'Microsoft YaHei';
+    color: black;
+}
+
+QRadioButton::indicator {
+    width: 18px;
+    height: 18px;
+    border-radius: 11px;
+    border: 2px solid #999999;
+    background-color: rgba(0, 0, 0, 5);
+    margin-right: 4px;
+}
+
+QRadioButton::indicator:hover {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+QRadioButton::indicator:pressed {
+    border: 2px solid #bbbbbb;
+    background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5,
+            stop:0 rgb(255, 255, 255),
+            stop:0.5 rgb(255, 255, 255),
+            stop:0.6 rgb(225, 224, 223),
+            stop:1 rgb(225, 224, 223));
+}
+
+QRadioButton::indicator:checked {
+    height: 22px;
+    width: 22px;
+    border: none;
+    border-radius: 11px;
+    background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5,
+            stop:0 rgb(255, 255, 255),
+            stop:0.5 rgb(255, 255, 255),
+            stop:0.6 --ThemeColorPrimary,
+            stop:1 --ThemeColorPrimary);
+}
+
+QRadioButton::indicator:checked:hover {
+    background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5,
+            stop:0 rgb(255, 255, 255),
+            stop:0.6 rgb(255, 255, 255),
+            stop:0.7 --ThemeColorPrimary,
+            stop:1 --ThemeColorPrimary);
+}
+
+QRadioButton::indicator:checked:pressed {
+    background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5,
+            stop:0 rgb(255, 255, 255),
+            stop:0.5 rgb(255, 255, 255),
+            stop:0.6 --ThemeColorPrimary,
+            stop:1 --ThemeColorPrimary);
+}
+
+QRadioButton:disabled {
+    color: rgba(0, 0, 0, 110);
+}
+
+QRadioButton::indicator:disabled {
+    border: 2px solid #bbbbbb;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+QTransparentToolButton {
+    background-color: transparent;
+    border: none;
+    border-radius: 4px;
+    margin: 0;
+}
+
+QTransparentToolButton:hover {
+    background-color: rgba(0, 0, 0, 9);
+    border: none;
+}
+
+QTransparentToolButton:pressed {
+    background-color: rgba(0, 0, 0, 6);
+    border: none;
+}
+
+
+QLineEdit, TextEdit, PlainTextEdit {
+    color: black;
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(0, 0, 0, 13);
+    border-bottom: 1px solid rgba(0, 0, 0, 100);
+    border-radius: 5px;
+    font: 14px "Segoe UI", "Microsoft YaHei";
+    padding: 0px 10px;
+    selection-background-color: --ThemeColorLight1;
+}
+
+QTextEdit,
+QPlainTextEdit {
+    padding: 0px 0px 0px 10px;
+}
+
+    QLineEdit:hover, QTextEdit:hover, QPlainTextEdit:hover {
+        background-color: rgba(249, 249, 249, 0.5);
+        border: 1px solid rgba(0, 0, 0, 13);
+        border-bottom: 1px solid rgba(0, 0, 0, 100);
+    }
+
+QLineEdit:focus {
+    border-bottom: 1px solid rgba(0, 0, 0, 13);
+    background-color: white;
+}
+
+QTextEdit:focus,
+QPlainTextEdit:focus {
+    border-bottom: 1px solid --ThemeColorPrimary;
+    background-color: white;
+}
+
+QLineEdit:disabled, TextEdit:disabled,
+QPlainTextEdit:disabled {
+    color: rgba(0, 0, 0, 150);
+    background-color: rgba(249, 249, 249, 0.3);
+    border: 1px solid rgba(0, 0, 0, 13);
+    border-bottom: 1px solid rgba(0, 0, 0, 13);
+}
+
+#lineEditButton {
+    background-color: transparent;
+    border-radius: 4px;
+    margin: 0;
+}
+
+    #lineEditButton:hover {
+        background-color: rgba(0, 0, 0, 9);
+    }
+
+    #lineEditButton:pressed {
+        background-color: rgba(0, 0, 0, 6);
+    }
