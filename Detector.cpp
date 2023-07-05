@@ -1,18 +1,19 @@
-#include "Detector.h"
+ï»¿#include "Detector.h"
 
 /*
-* @brief ¼ÓÔØÄ£ĞÍ, ÊäÈë, Êä³öÊı¾İ
-* @param model_path - Ä£ĞÍÎ»ÖÃ, Ö§³Öxml(openvino)/onnxÄ£ĞÍ
-* @param conf - ãĞÖµ
+* @brief åŠ è½½æ¨¡å‹, è¾“å…¥, è¾“å‡ºæ•°æ®
+* @param model_path - æ¨¡å‹ä½ç½®, æ”¯æŒxml(openvino)/onnxæ¨¡å‹
+* @param conf - é˜ˆå€¼
 */
 bool Detector::loadModule(string model_path, float conf) {
 	try {
-		Core *ie = new Core();
-		auto network = ie->ReadNetwork(model_path);
-		input_info = network.getInputsInfo();
-		output_info = network.getOutputsInfo();
+		// known Error: æœªæ‰¾åˆ°plugins.xml, å·²è§£å†³
+		Core ie;
+		auto network = ie.ReadNetwork(model_path); 
+		input_info = network.getInputsInfo(); 
+		output_info = network.getOutputsInfo(); 
 
-		// ÉèÖÃÊäÈë¸ñÊ½
+		// è®¾ç½®è¾“å…¥æ ¼å¼
 		for (auto& item : input_info) {
 			auto input_data = item.second;
 			input_data->setPrecision(Precision::FP32);
@@ -21,38 +22,41 @@ bool Detector::loadModule(string model_path, float conf) {
 			input_data->getPreProcess().setColorFormat(ColorFormat::RGB);
 		}
 
-		// ÉèÖÃÊä³ö¸ñÊ½
+		// è®¾ç½®è¾“å‡ºæ ¼å¼
 		for (auto& item : output_info) {
 			auto output_data = item.second;
 			output_data->setPrecision(Precision::FP32);
 		}
-		auto executable_network = ie->LoadNetwork(network, "GPU");
+		auto executable_network = ie.LoadNetwork(network, "GPU");
 
-		// ´´½¨ÇëÇó
+		// åˆ›å»ºè¯·æ±‚
 		infer_request = executable_network.CreateInferRequest();
 		return true;
 	} catch(exception& e) {
+		QMessageBox warn;
+		warn.warning(nullptr, "Oops", "ğŸ˜¥ å‘ç”Ÿé”™è¯¯\n ERROR_CODE: 0x04" + (QString)e.what(), "ç¡®å®š", "å–æ¶ˆ");
 		return false;
 	}
 }
 
 /*
-* @brief ÍÆÀí
-* @return ·µ»ØÍÆÀíºóµÄÍ¼Æ¬
+* @brief æ¨ç†
+* @return è¿”å›æ¨ç†åçš„å›¾ç‰‡
 */
 Mat Detector::Detect(Mat frame) {
-	// ÉèÖÃÊäÈë
+	// è®¾ç½®è¾“å…¥
 	int frame_height = frame.rows, frame_width = frame.cols;
 	float scale_x = frame_width / 640.0, scale_y = frame_height / 640.0;
 
-	// ´¦ÀíÊä³ö
+	// å¤„ç†è¾“å‡º
 	vector<Rect> boxes;
+	for (auto it : boxes) cout << it << "re" << endl;
 	vector<int> classIDs;
 	vector<float> confidence;
 	for (auto& item : input_info) {
 		auto input_name = item.first;
 
-		// »ñÈ¡ÊäÈëBLOB
+		// è·å–è¾“å…¥BLOB
 		auto input = this->infer_request.GetBlob(input_name);
 		size_t num_channels = input->getTensorDesc().getDims()[1],
 			   h			= input->getTensorDesc().getDims()[2],
@@ -71,7 +75,7 @@ Mat Detector::Detect(Mat frame) {
 			}
 		}
 	}
-	this->infer_request.Infer();	// Î´Öª´íÎó
+	this->infer_request.Infer();
 	for (auto& item : output_info) {
 		auto output_name = item.first;
 		auto output = infer_request.GetBlob(output_name);
@@ -96,11 +100,11 @@ Mat Detector::Detect(Mat frame) {
 				int col = i % side_h;
 				int object_index = c * side_data_square + row * side_data_w + col * side_data;
 
-				// ãĞÖµ¹ıÂË
+				// é˜ˆå€¼è¿‡æ»¤
 				float conf_ = this->sigmoid_function(output_blob[object_index + 4]);
 				if (conf_ < this->conf) continue;
 
-				// ½âÎö×ø±êÊı¾İ
+				// è§£æåæ ‡æ•°æ®
 				float	x = (this->sigmoid_function(output_blob[object_index]) * 2 - 0.5 + col) * stride,
 						y = (this->sigmoid_function(output_blob[object_index + 1]) * 2 - 0.5 + row) * stride,
 						w = pow(this->sigmoid_function(output_blob[object_index + 2]) * 2, 2) * this->anchors[anthor_index + c * 2],
@@ -108,7 +112,7 @@ Mat Detector::Detect(Mat frame) {
 				float max_prob = -1;
 				int class_index = -1;
 
-				// ½âÎöÀà±ğ
+				// è§£æç±»åˆ«
 				for (int d = 5; d < 85; d++) {
 					float prob = this->sigmoid_function(output_blob[object_index + d]);
 					if (prob > max_prob) {
@@ -117,13 +121,13 @@ Mat Detector::Detect(Mat frame) {
 					}
 				}
 
-				// ×ª»»×ø±ê
-				int x1 = saturate_cast<int>((x - w / 2) * scale_x),	// ×óÉÏ->x
-					y1 = saturate_cast<int>((y - h / 2) * scale_y),	// ×óÉÏ->y
-					x2 = saturate_cast<int>((x + w / 2) * scale_x),	// ÓÒÏÂ->x
-					y2 = saturate_cast<int>((y + h / 2) * scale_y);	// ÓÒÏÂ->y
+				// è½¬æ¢åæ ‡
+				int x1 = saturate_cast<int>((x - w / 2) * scale_x),	// å·¦ä¸Š->x
+					y1 = saturate_cast<int>((y - h / 2) * scale_y),	// å·¦ä¸Š->y
+					x2 = saturate_cast<int>((x + w / 2) * scale_x),	// å³ä¸‹->x
+					y2 = saturate_cast<int>((y + h / 2) * scale_y);	// å³ä¸‹->y
 
-				// ½âÎöÊä³ö
+				// è§£æè¾“å‡º
 				classIDs.push_back(class_index);
 				confidence.push_back((float)conf_);
 				boxes.push_back(Rect(x1, y1, x2 - x1, y2 - y1));
@@ -142,7 +146,7 @@ Mat Detector::Detect(Mat frame) {
 }
 
 /*
-* @brief »ñÈ¡Ãªµã
+* @brief è·å–é”šç‚¹
 * @param scale_w - NULL
 * @param scale_h - NULL
 */
@@ -156,7 +160,7 @@ int Detector::get_anchor_index(int scale_w, int scale_h) {
 }
 
 /*
-* @brief »ñÈ¡²½³¤
+* @brief è·å–æ­¥é•¿
 * @param scale_w - NULL
 * @param scale_h - NULL
 */
